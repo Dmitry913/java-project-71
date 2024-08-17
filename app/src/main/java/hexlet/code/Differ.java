@@ -1,7 +1,10 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -9,11 +12,23 @@ import java.util.List;
 import java.util.Map;
 
 public class Differ {
-    private static final ObjectMapper mapper = new ObjectMapper();
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final String REMOVE_PAIR = "- ";
     private static final String ADD_PAIR = "+ ";
 
-    public static String generate(Map<String, String> json1, Map<String, String> json2) throws Exception {
+    public static String generate(Path path1, Path path2) throws Exception {
+        var contentFromFirstFile = getData(Files.readString(path1.toAbsolutePath().normalize()));
+        var contentFromSecondFile = getData(Files.readString(path2.toAbsolutePath().normalize()));
+        return findDiff(contentFromFirstFile, contentFromSecondFile);
+    }
+
+    private static Map<String, String> getData(String content) throws Exception {
+        return MAPPER.readValue(content, new TypeReference<>() {
+        });
+    }
+
+    private static String findDiff(Map<String, String> json1, Map<String, String> json2) throws Exception {
         Map<String, String> copyJson2 = new HashMap<>(json2);
         Map<List<String>, String> diff = new LinkedHashMap<>();
         for (var keyValue1 : json1.entrySet()) {
@@ -33,9 +48,8 @@ public class Differ {
         StringBuilder builder = new StringBuilder("{\n");
         diff.entrySet().stream().sorted(
                         Comparator.comparing(entry -> entry.getKey().getLast()))
-                .forEach(entry -> builder.append("  " + entry.getKey().getFirst() + entry.getKey().getLast() + ": " + entry.getValue() + "\n"));
-//                .forEach(entry -> sortedResult.put(entry.getKey().getFirst() + entry.getKey().getLast(), entry.getValue()));
-//        return mapper.writeValueAsString(sortedResult);
+                .forEach(entry -> builder.append(
+                        "  " + entry.getKey().getFirst() + entry.getKey().getLast() + ": " + entry.getValue() + "\n"));
         builder.append("}");
         return builder.toString();
     }
