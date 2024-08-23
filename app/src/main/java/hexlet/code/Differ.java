@@ -1,9 +1,5 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,19 +9,13 @@ import java.util.Map;
 
 public class Differ {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final String REMOVE_PAIR = "- ";
     private static final String ADD_PAIR = "+ ";
 
     public static String generate(Path path1, Path path2) throws Exception {
-        var contentFromFirstFile = getData(Files.readString(path1.toAbsolutePath().normalize()));
-        var contentFromSecondFile = getData(Files.readString(path2.toAbsolutePath().normalize()));
+        var contentFromFirstFile = Parser.parseFile(path1);
+        var contentFromSecondFile = Parser.parseFile(path2);
         return findDiff(contentFromFirstFile, contentFromSecondFile);
-    }
-
-    private static Map<String, String> getData(String content) throws Exception {
-        return MAPPER.readValue(content, new TypeReference<>() {
-        });
     }
 
     private static String findDiff(Map<String, String> json1, Map<String, String> json2) throws Exception {
