@@ -1,46 +1,35 @@
 package hexlet.code;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DifferTest {
 
-    @Test
-    public void testSimpleJson() throws Exception {
-        String correctAnswer = """
-                {
-                  - follow: false
-                    host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                  + timeout: 20
-                  + verbose: true
-                }""";
-        String result = Differ.generate(
-                Path.of("src/test/resources/json1.json"),
-                Path.of("src/test/resources/json2.json")
-        );
-        assertEquals(correctAnswer, result);
-    }
-
-    @Test
-    public void testSimpleYaml() throws Exception {
-        String correctAnswer = """
-                {
-                  - follow: false
-                    host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                  + timeout: 20
-                  + verbose: true
-                }""";
-        String result = Differ.generate(
-                Path.of("src/test/resources/yml1.yml"),
-                Path.of("src/test/resources/yml2.yml")
-        );
-        assertEquals(correctAnswer, result);
+    @ParameterizedTest
+    @CsvSource(
+            value = {
+                "src/test/resources/json/test1/expected.txt;"
+                    + "src/test/resources/json/test1/json1.json;"
+                    + "src/test/resources/json/test1/json2.json;"
+                    + "stylish",
+                "src/test/resources/json/test2/expected.txt;"
+                    + "src/test/resources/json/test2/json1.json;"
+                    + "src/test/resources/json/test2/json2.json;"
+                    + "stylish",
+                "src/test/resources/yaml/test1/expected.txt;"
+                    + "src/test/resources/yaml/test1/yml1.yml;"
+                    + "src/test/resources/yaml/test1/yml2.yml;"
+                    + "stylish"
+            },
+            delimiter = ';')
+    public void test(String expectedPath, String path1, String path2, String format) throws Exception {
+        GenDiffCommand genDiffCommand = new GenDiffCommand(Path.of(path1), Path.of(path2), format);
+        String expected = Files.readString(Path.of(expectedPath).toAbsolutePath().normalize());
+        assertEquals(expected, genDiffCommand.getOutput());
     }
 }

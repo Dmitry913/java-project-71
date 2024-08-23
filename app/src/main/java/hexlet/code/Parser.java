@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class Parser {
 
-    public static Map<String, String> parseFile(Path path1) throws Exception {
+    public static Map<String, Object> parseFile(Path path1) throws Exception {
         String contentFile = Files.readString(path1.toAbsolutePath().normalize());
         ObjectMapper mapper = createMapper(path1);
         return mapper.readValue(contentFile, new TypeReference<>() {

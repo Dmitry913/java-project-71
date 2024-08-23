@@ -1,5 +1,9 @@
 package hexlet.code;
 
+import hexlet.code.formatter.Formatter;
+import hexlet.code.formatter.StylishFormatter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -12,6 +16,8 @@ import java.util.concurrent.Callable;
         mixinStandardHelpOptions = true,
         version = "genDiff 1.0",
         description = "Compares two configuration files and shows a difference.")
+@AllArgsConstructor
+@NoArgsConstructor
 public class GenDiffCommand implements Callable<Integer> {
 
     @Parameters(index = "0", description = "path to first file")
@@ -24,10 +30,24 @@ public class GenDiffCommand implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        System.out.println(Differ.generate(
-                pathToFirstFile.toAbsolutePath().normalize(),
-                pathToSecondFile.toAbsolutePath().normalize()
-        ));
+        String output = getOutput();
+        System.out.println(output);
         return 0;
+    }
+
+    public String getOutput() throws Exception {
+        var contentFromFirstFile = Parser.parseFile(pathToFirstFile);
+        var contentFromSecondFile = Parser.parseFile(pathToSecondFile);
+        var diff = Differ.findDiff(contentFromFirstFile, contentFromSecondFile);
+        return createFormatter().generateOutput(diff);
+    }
+
+    private Formatter createFormatter() {
+        switch (format) {
+            case StylishFormatter.FORMAT_NAME:
+                return new StylishFormatter();
+            default:
+                throw new RuntimeException("Не наден данный формат вывода");
+        }
     }
 }
