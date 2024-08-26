@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import hexlet.code.formatters.Formatter;
+import hexlet.code.formatters.JsonFormatter;
 import hexlet.code.formatters.PlainFormatter;
 import hexlet.code.formatters.StylishFormatter;
 import lombok.AllArgsConstructor;
@@ -49,6 +50,8 @@ public class GenDiffCommand implements Callable<Integer> {
                 return new StylishFormatter();
             case PlainFormatter.FORMAT_NAME:
                 return new PlainFormatter();
+            case JsonFormatter.FORMAT_NAME:
+                return new JsonFormatter();
             default:
                 throw new RuntimeException("Не наден данный формат вывода");
         }

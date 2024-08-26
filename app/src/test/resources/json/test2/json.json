@@ -1,0 +1,64 @@
+[ {
+  "propertyName" : "setting1",
+  "preferValue" : "Some value",
+  "newValue" : "Another value"
+}, {
+  "propertyName" : "setting2",
+  "preferValue" : 200,
+  "newValue" : 300
+}, {
+  "propertyName" : "setting3",
+  "preferValue" : true,
+  "newValue" : "none"
+}, {
+  "propertyName" : "key1",
+  "preferValue" : "value1",
+  "newValue" : "noValue"
+}, {
+  "propertyName" : "numbers1",
+  "preferValue" : [ 1, 2, 3, 4 ],
+  "newValue" : [ 1, 2, 3, 4 ]
+}, {
+  "propertyName" : "numbers2",
+  "preferValue" : [ 2, 3, 4, 5 ],
+  "newValue" : [ 22, 33, 44, 55 ]
+}, {
+  "propertyName" : "id",
+  "preferValue" : 45,
+  "newValue" : null
+}, {
+  "propertyName" : "default",
+  "preferValue" : null,
+  "newValue" : [ "value1", "value2" ]
+}, {
+  "propertyName" : "checked",
+  "preferValue" : false,
+  "newValue" : true
+}, {
+  "propertyName" : "numbers3",
+  "preferValue" : [ 3, 4, 5 ],
+  "newValue" : "noValue"
+}, {
+  "propertyName" : "chars1",
+  "preferValue" : [ "a", "b", "c" ],
+  "newValue" : [ "a", "b", "c" ]
+}, {
+  "propertyName" : "chars2",
+  "preferValue" : [ "d", "e", "f" ],
+  "newValue" : false
+}, {
+  "propertyName" : "key2",
+  "preferValue" : "noValue",
+  "newValue" : "value2"
+}, {
+  "propertyName" : "numbers4",
+  "preferValue" : "noValue",
+  "newValue" : [ 4, 5, 6 ]
+}, {
+  "propertyName" : "obj1",
+  "preferValue" : "noValue",
+  "newValue" : {
+    "nestedKey" : "value",
+    "isNested" : true
+  }
+} ]

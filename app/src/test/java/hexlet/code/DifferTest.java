@@ -28,7 +28,11 @@ public class DifferTest {
                 "src/test/resources/json/test2/plain.txt;"
                         + "src/test/resources/json/test2/json1.json;"
                         + "src/test/resources/json/test2/json2.json;"
-                        + "plain"
+                        + "plain",
+                "src/test/resources/json/test2/json.json;"
+                    + "src/test/resources/json/test2/json1.json;"
+                    + "src/test/resources/json/test2/json2.json;"
+                    + "json"
             },
             delimiter = ';')
     public void test(String expectedPath, String path1, String path2, String format) throws Exception {

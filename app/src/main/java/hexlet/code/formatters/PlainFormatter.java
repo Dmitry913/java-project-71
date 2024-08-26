@@ -1,32 +1,33 @@
 package hexlet.code.formatters;
 
+import hexlet.code.DifferPropertyDescription;
+
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-import static hexlet.code.Differ.NO_VALUE;
+import static hexlet.code.DifferPropertyDescription.NO_VALUE;
 
 public class PlainFormatter implements Formatter {
 
     public static final String FORMAT_NAME = "plain";
 
     @Override
-    public String generateOutput(Map<String, List<Object>> diff) {
+    public String generateOutput(List<DifferPropertyDescription> diff) {
         StringBuilder result = new StringBuilder();
-        diff.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry -> {
+        diff.stream().sorted(Comparator.comparing(DifferPropertyDescription::getPropertyName)).forEach(elem -> {
                 StringBuilder lineBuilder = new StringBuilder();
-                lineBuilder.append("Property '").append(entry.getKey()).append("' was ");
-                List<Object> values = entry.getValue();
-                if (NO_VALUE.equals(values.get(0))) {
+            lineBuilder.append("Property '").append(elem.getPropertyName()).append("' was ");
+            if (NO_VALUE.equals(elem.getPreferValue())) {
                     lineBuilder.append("added with value: ")
-                            .append(getValueDescription(values.get(1)));
-                } else if (NO_VALUE.equals(values.get(1))) {
+                            .append(getValueDescription(elem.getNewValue()));
+            } else if (NO_VALUE.equals(elem.getNewValue())) {
                     lineBuilder.append("removed");
-                } else if (!Objects.equals(values.get(0), values.get(1))) {
+            } else if (!Objects.equals(elem.getPreferValue(), elem.getNewValue())) {
                     lineBuilder.append("updated. From ")
-                            .append(getValueDescription(values.get(0)))
+                            .append(getValueDescription(elem.getPreferValue()))
                             .append(" to ")
-                            .append(getValueDescription(values.get(1)));
+                            .append(getValueDescription(elem.getNewValue()));
                 } else {
                     return;
                 }

@@ -1,36 +1,37 @@
 package hexlet.code.formatters;
 
+import hexlet.code.DifferPropertyDescription;
+
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static hexlet.code.Differ.NO_VALUE;
+import static hexlet.code.DifferPropertyDescription.NO_VALUE;
 
 public class StylishFormatter implements Formatter {
     public static final String FORMAT_NAME = "stylish";
 
     @Override
-    public String generateOutput(Map<String, List<Object>> diff) {
+    public String generateOutput(List<DifferPropertyDescription> diff) {
         StringBuilder builder = new StringBuilder();
         builder.append("{\n");
-        diff.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry -> {
-            List<Object> values = entry.getValue();
+        diff.stream().sorted(Comparator.comparing(DifferPropertyDescription::getPropertyName)).forEach(elem -> {
             builder.append("  ");
-            if (NO_VALUE.equals(values.get(0))) {
-                builder.append("+ ").append(entry.getKey()).append(": ").append(
-                        Optional.ofNullable(values.get(1)).orElse("null"));
-            } else if (NO_VALUE.equals(entry.getValue().get(1))) {
-                builder.append("- ").append(entry.getKey()).append(": ").append(
-                        Optional.ofNullable(values.get(0)).orElse("null"));
-            } else if (Objects.equals(values.get(0), values.get(1))) {
-                builder.append("  ").append(entry.getKey()).append(": ").append(
-                        Optional.ofNullable(values.get(0)).orElse("null"));
+                if (NO_VALUE.equals(elem.getPreferValue())) {
+                    builder.append("+ ").append(elem.getPropertyName()).append(": ").append(
+                            Optional.ofNullable(elem.getNewValue()).orElse("null"));
+                } else if (NO_VALUE.equals(elem.getNewValue())) {
+                    builder.append("- ").append(elem.getPropertyName()).append(": ").append(
+                            Optional.ofNullable(elem.getPreferValue()).orElse("null"));
+                } else if (Objects.equals(elem.getPreferValue(), elem.getNewValue())) {
+                    builder.append("  ").append(elem.getPropertyName()).append(": ").append(
+                            Optional.ofNullable(elem.getPreferValue()).orElse("null"));
             } else {
-                builder.append("- ").append(entry.getKey()).append(": ").append(
-                        Optional.ofNullable(values.get(0)).orElse("null")).append("\n");
-                builder.append("  ").append("+ ").append(entry.getKey()).append(": ").append(
-                        Optional.ofNullable(values.get(1)).orElse("null"));
+                builder.append("- ").append(elem.getPropertyName()).append(": ").append(
+                        Optional.ofNullable(elem.getPreferValue()).orElse("null")).append("\n");
+                builder.append("  ").append("+ ").append(elem.getPropertyName()).append(": ").append(
+                        Optional.ofNullable(elem.getNewValue()).orElse("null"));
             }
             builder.append("\n");
         }
