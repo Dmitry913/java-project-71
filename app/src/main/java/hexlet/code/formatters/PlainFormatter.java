@@ -8,26 +8,27 @@ import java.util.Objects;
 
 import static hexlet.code.DifferPropertyDescription.NO_VALUE;
 
-public class PlainFormatter implements Formatter {
+public final class PlainFormatter extends Formatter {
 
     public static final String FORMAT_NAME = "plain";
 
     @Override
-    public String generateOutput(List<DifferPropertyDescription> diff) {
+    public String generate(List<DifferPropertyDescription> diff) {
         StringBuilder result = new StringBuilder();
-        diff.stream().sorted(Comparator.comparing(DifferPropertyDescription::getPropertyName)).forEach(elem -> {
+        diff.stream().sorted(Comparator.comparing(DifferPropertyDescription::getPropertyName))
+            .forEach(elem -> {
                 StringBuilder lineBuilder = new StringBuilder();
-            lineBuilder.append("Property '").append(elem.getPropertyName()).append("' was ");
-            if (NO_VALUE.equals(elem.getPreferValue())) {
-                    lineBuilder.append("added with value: ")
-                            .append(getValueDescription(elem.getNewValue()));
-            } else if (NO_VALUE.equals(elem.getNewValue())) {
-                    lineBuilder.append("removed");
-            } else if (!Objects.equals(elem.getPreferValue(), elem.getNewValue())) {
-                    lineBuilder.append("updated. From ")
-                            .append(getValueDescription(elem.getPreferValue()))
-                            .append(" to ")
-                            .append(getValueDescription(elem.getNewValue()));
+                lineBuilder.append("Property '").append(elem.getPropertyName()).append("' was ");
+                if (NO_VALUE.equals(elem.getPreferValue())) {
+                        lineBuilder.append("added with value: ")
+                                .append(getValueDescription(elem.getNewValue()));
+                } else if (NO_VALUE.equals(elem.getNewValue())) {
+                        lineBuilder.append("removed");
+                } else if (!Objects.equals(elem.getPreferValue(), elem.getNewValue())) {
+                        lineBuilder.append("updated. From ")
+                                .append(getValueDescription(elem.getPreferValue()))
+                                .append(" to ")
+                                .append(getValueDescription(elem.getNewValue()));
                 } else {
                     return;
                 }
@@ -35,6 +36,7 @@ public class PlainFormatter implements Formatter {
                 result.append(lineBuilder);
             }
         );
+        result.delete(result.length() - 1, result.length());
         return result.toString();
     }
 

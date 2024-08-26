@@ -8,7 +8,7 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DifferTest {
+public final class DifferTest {
 
     @ParameterizedTest
     @CsvSource(
@@ -36,8 +36,7 @@ public class DifferTest {
             },
             delimiter = ';')
     public void test(String expectedPath, String path1, String path2, String format) throws Exception {
-        GenDiffCommand genDiffCommand = new GenDiffCommand(Path.of(path1), Path.of(path2), format);
         String expected = Files.readString(Path.of(expectedPath).toAbsolutePath().normalize());
-        assertEquals(expected, genDiffCommand.getOutput());
+        assertEquals(expected, Differ.generate(path1, path2, format));
     }
 }

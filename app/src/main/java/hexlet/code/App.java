@@ -6,7 +6,7 @@ import picocli.CommandLine;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class App {
     public static void main(String[] args) {
-        new CommandLine(new GenDiffCommand()).execute(args);
+        new CommandLine(new CommandTerminal()).execute(args);
     }
 
 }

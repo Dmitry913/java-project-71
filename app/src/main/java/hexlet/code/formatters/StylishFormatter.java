@@ -9,11 +9,11 @@ import java.util.Optional;
 
 import static hexlet.code.DifferPropertyDescription.NO_VALUE;
 
-public class StylishFormatter implements Formatter {
+public final class StylishFormatter extends Formatter {
     public static final String FORMAT_NAME = "stylish";
 
     @Override
-    public String generateOutput(List<DifferPropertyDescription> diff) {
+    public String generate(List<DifferPropertyDescription> diff) {
         StringBuilder builder = new StringBuilder();
         builder.append("{\n");
         diff.stream().sorted(Comparator.comparing(DifferPropertyDescription::getPropertyName)).forEach(elem -> {
