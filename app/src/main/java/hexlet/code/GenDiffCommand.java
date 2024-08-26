@@ -1,7 +1,8 @@
 package hexlet.code;
 
-import hexlet.code.formatter.Formatter;
-import hexlet.code.formatter.StylishFormatter;
+import hexlet.code.formatters.Formatter;
+import hexlet.code.formatters.PlainFormatter;
+import hexlet.code.formatters.StylishFormatter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import picocli.CommandLine.Command;
@@ -46,6 +47,8 @@ public class GenDiffCommand implements Callable<Integer> {
         switch (format) {
             case StylishFormatter.FORMAT_NAME:
                 return new StylishFormatter();
+            case PlainFormatter.FORMAT_NAME:
+                return new PlainFormatter();
             default:
                 throw new RuntimeException("Не наден данный формат вывода");
         }

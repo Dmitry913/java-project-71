@@ -17,14 +17,18 @@ public class DifferTest {
                     + "src/test/resources/json/test1/json1.json;"
                     + "src/test/resources/json/test1/json2.json;"
                     + "stylish",
-                "src/test/resources/json/test2/expected.txt;"
+                "src/test/resources/json/test2/stylish.txt;"
                     + "src/test/resources/json/test2/json1.json;"
                     + "src/test/resources/json/test2/json2.json;"
                     + "stylish",
                 "src/test/resources/yaml/test1/expected.txt;"
                     + "src/test/resources/yaml/test1/yml1.yml;"
                     + "src/test/resources/yaml/test1/yml2.yml;"
-                    + "stylish"
+                    + "stylish",
+                "src/test/resources/json/test2/plain.txt;"
+                        + "src/test/resources/json/test2/json1.json;"
+                        + "src/test/resources/json/test2/json2.json;"
+                        + "plain"
             },
             delimiter = ';')
     public void test(String expectedPath, String path1, String path2, String format) throws Exception {
